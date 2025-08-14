@@ -35,7 +35,6 @@ from bot.plugins.status_message_fn import (
 
 from bot.commands import Command
 from bot.plugins.call_back_button_handler import button
-from bot.commands import Command
 
 uptime = dt.now()
 
@@ -67,9 +66,6 @@ if __name__ == "__main__":
     if not os.path.isdir(DOWNLOAD_LOCATION):
         os.makedirs(DOWNLOAD_LOCATION)
     
-    # Remove the problematic parse mode setting
-    # app.set_parse_mode("html")  # Commented out to fix parse mode error
-    
     # START command
     incoming_start_message_handler = MessageHandler(
         incoming_start_message_f,
@@ -78,7 +74,7 @@ if __name__ == "__main__":
     app.add_handler(incoming_start_message_handler)
     
     @app.on_message(filters.incoming & filters.command(["compress", f"compress@{BOT_USERNAME}"]))
-    async def help_message(app, message):
+    async def compress_command(app, message):
         query = await message.reply_text("Added to Queue ⏰...\nPlease be patient, Compress will start soon", quote=True)
         data.append(message.reply_to_message)
         if len(data) == 1:
@@ -86,17 +82,17 @@ if __name__ == "__main__":
             await add_task(message.reply_to_message)     
             
     @app.on_message(filters.incoming & filters.command(["480p", f"480p@{BOT_USERNAME}"]))
-    async def help_message_480p(app, message):
+    async def set_480p(app, message):
         await message.reply_text("480p Mode has been set", quote=True)
         cmd1.insert(0, "-pix_fmt yuv420p -preset medium -s 854x480 -crf 28 -profile:a  aac_he_v2 -c:a libopus -ac 1 -vbr 2 -ab 60k -c:s copy -y")
                  
     @app.on_message(filters.incoming & filters.command(["1080p", f"1080p@{BOT_USERNAME}"]))
-    async def help_message_1080p(app, message):
+    async def set_1080p(app, message):
         await message.reply_text("1080p Mode has been set", quote=True)
         cmd1.insert(0, "-pix_fmt yuv420p10 -preset veryfast -s 1920x1080 -crf 25 -c:a libopus -ab 128k -c:s copy -y")
                          
     @app.on_message(filters.incoming & filters.command(["restart", f"restart@{BOT_USERNAME}"]))
-    async def restarter(app, message):
+    async def restart_bot(app, message):
         await message.reply_text("Rebooting ...")
         quit(1)
         
@@ -115,7 +111,7 @@ if __name__ == "__main__":
             
     @app.on_message(filters.incoming & (filters.photo))
     async def handle_photo(app, message):
-        os.system('rm thumb.jpg')
+        os.system('rm -f thumb.jpg')
         await message.download(file_name='/app/thumb.jpg')
         await message.reply_text('Thumbnail Added')
         
@@ -136,24 +132,24 @@ if __name__ == "__main__":
         await on_task_complete()  
    
     @app.on_message(filters.incoming & filters.command(["help", f"help@{BOT_USERNAME}"]))
-    async def help_message(app, message):
+    async def help_command(app, message):
         help_text = (
-            "Hi, I am <b>Video Encoder bot</b>\n\n"
+            "Hi, I am Video Encoder bot\n\n"
             "➥ Send me your telegram files\n"
-            "➥ I will encode them one by one as I have <b>queue feature</b>\n"
+            "➥ I will encode them one by one as I have queue feature\n"
             "➥ Just send me the jpg/pic and it will be set as your custom thumbnail \n"
             "➥ For ffmpeg lovers - u can change crf by /eval crf.insert(0, 'crf value')\n"
             "➥ Join @Tellybots for bots \n\n"
-            "🏷<b>Maintained By: @Tellybots</b>"
+            "🏷Maintained By: @Tellybots"
         )
-        await message.reply_text(help_text, quote=True, parse_mode=ParseMode.HTML)
+        await message.reply_text(help_text, quote=True)
   
     @app.on_message(filters.incoming & filters.command(["log", f"log@{BOT_USERNAME}"]))
     async def log_message(app, message):
         await upload_log_file(app, message)
 
     @app.on_message(filters.incoming & filters.command(["ping", f"ping@{BOT_USERNAME}"]))
-    async def ping_message(app, message):
+    async def ping_command(app, message):
         stt = dt.now()
         ed = dt.now()
         v = ts(int((ed - uptime).seconds) * 1000)
