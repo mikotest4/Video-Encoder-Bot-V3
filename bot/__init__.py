@@ -8,16 +8,12 @@ from logging.handlers import RotatingFileHandler
 import os
 import time
 from pyrogram import Client
+from pyrogram.enums import ParseMode
 from bot.config import Config
 
 # TODO: is there a better way?
 
-
-
-
 from bot.config import Config
-
-
 
 # dont think ne dumb (c) @Animes_Encoded 
 cmd1 = []
@@ -49,13 +45,15 @@ bit = []
 preset = []
 # senpai I am changing app string WHY???????
 pid_list = []
+
 app = Client(
-        SESSION_NAME,
-        bot_token=TG_BOT_TOKEN,
-        api_id=APP_ID,
-        api_hash=API_HASH,
-        workers=2
-    )
+    SESSION_NAME,
+    bot_token=TG_BOT_TOKEN,
+    api_id=APP_ID,
+    api_hash=API_HASH,
+    workers=2
+)
+
 if os.path.exists(LOG_FILE_ZZGEVC):
     with open(LOG_FILE_ZZGEVC, "r+") as f_d:
         f_d.truncate(0)
