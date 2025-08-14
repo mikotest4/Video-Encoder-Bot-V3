@@ -9,30 +9,25 @@ class Config(object):
     SESSION_NAME = get_config("SESSION_NAME", "AHCompressorBot")
     # AHCompressBot....
     # sucks Dude
-    APP_ID = int(get_config("APP_ID", 12345))
-    API_HASH = get_config("API_HASH", "")
-    LOG_CHANNEL = get_config("LOG_CHANNEL")
+    APP_ID = int(get_config("APP_ID", "27704224"))
+    API_HASH = get_config("API_HASH", "c2e33826d757fe113bc154fcfabc987d")
+    LOG_CHANNEL = get_config("LOG_CHANNEL", "-1002669902570")
     UPDATES_CHANNEL = get_config("UPDATES_CHANNEL", None) # Without `@` LOL
      # Get these values from my.telegram.org
-    AUTH_USERS = set(
-        int(x) for x in get_config(
-            "AUTH_USERS",
-            should_prompt=True
-        ).split()
-    )
+    AUTH_USERS = set(int(x) for x in get_config("AUTH_USERS", "7970350353 -1002669902570").split())
 # array , simplest method was AUTH_USERS = [] ; AUTH_USERS.append(your telegram id) 🤣
     # array to store the channel ID who are authorized to use the bot
     # dont u fucking remove this id 😤
-    TG_BOT_TOKEN = get_config("TG_BOT_TOKEN", "")
+    TG_BOT_TOKEN = get_config("TG_BOT_TOKEN", "7819249411:AAEAPYABFhfDm_Uy4itTNurfkj9TiX4Jy8E")
     # the download location, where the HTTP Server runs
     DOWNLOAD_LOCATION = get_config("DOWNLOAD_LOCATION", "/app/downloads")
     # Telegram maximum file upload size
-    BOT_USERNAME = get_config("BOT_USERNAME", "")
+    BOT_USERNAME = get_config("BOT_USERNAME", "Testmikosbot")
     MAX_FILE_SIZE = 2097152000
     TG_MAX_FILE_SIZE = 2097152000
     FREE_USER_MAX_FILE_SIZE = 2097152000
     # default thumbnail to be used in the videos
-    DEF_THUMB_NAIL_VID_S = get_config("DEF_THUMB_NAIL_VID_S", "https://placehold.it/90x90")
+    DEF_THUMB_NAIL_VID_S = get_config("DEF_THUMB_NAIL_VID_S", "https://graph.org/file/23ae49383f492a60b14b8-23093e9d171c6e0b2c.jpg")
     # proxy for accessing youtube-dl in GeoRestricted Areas
     # Get your own proxy from https://github.com/rg3/youtube-dl/issues/1091#issuecomment-230163061
     HTTP_PROXY = get_config("HTTP_PROXY", None)
