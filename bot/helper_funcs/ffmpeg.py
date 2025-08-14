@@ -1,5 +1,3 @@
- 
-
 from bot.config import Config
 import asyncio
 import os
@@ -60,7 +58,7 @@ async def convert_video(video_file, output_directory, total_time, bot, message, 
     with open(status, 'r+') as f:
       statusMsg = json.load(f)
       statusMsg['pid'] = process.pid
-      statusMsg['message'] = message.message_id
+      statusMsg['message'] = message.id  # Fixed: changed from message.message_id to message.id
       f.seek(0)
       json.dump(statusMsg,f,indent=2)
     # os.kill(process.pid, 9)
@@ -71,7 +69,7 @@ async def convert_video(video_file, output_directory, total_time, bot, message, 
         text = file.read()
         frame = re.findall("frame=(\d+)", text)
         time_in_us=re.findall("out_time_ms=(\d+)", text)
-        progress=re.findall("progress=(\w+)", text)
+        progress_regex=re.findall("progress=(\w+)", text)
         speed=re.findall("speed=(\d+\.?\d*)", text)
         if len(frame):
           frame = int(frame[-1])
@@ -85,9 +83,9 @@ async def convert_video(video_file, output_directory, total_time, bot, message, 
           time_in_us = time_in_us[-1]
         else:
           time_in_us = 1;
-        if len(progress):
-          if progress[-1] == "end":
-            Config.LOGGER.info(progress[-1])
+        if len(progress_regex):
+          if progress_regex[-1] == "end":
+            Config.LOGGER.info(progress_regex[-1])
             isDone = True
             break
         execution_time = TimeFormatter((time.time() - COMPRESSION_START_TIME)*1000)
@@ -102,14 +100,14 @@ async def convert_video(video_file, output_directory, total_time, bot, message, 
             ''.join([FINISHED_PROGRESS_STR for i in range(math.floor(percentage / 10))]),
             ''.join([UN_FINISHED_PROGRESS_STR for i in range(10 - math.floor(percentage / 10))])
             )
-        stats = f'📦️ <b>Encoding Is In Progress%\n\n'
+        stats = f'📦️ <b>Encoding Is In Progress</b>\n\n'
         try:
           await message.edit_text(
             text=stats,
             reply_markup=InlineKeyboardMarkup(
                 [
                     [ 
-                        InlineKeyboardButton('❌ Cancel ❌', callback_data='cancel') # Nice Call 🤭
+                        InlineKeyboardButton('❌ Cancel ❌', callback_data='fuckingdo') # Fixed callback data
                     ]
                 ]
             )
@@ -117,7 +115,7 @@ async def convert_video(video_file, output_directory, total_time, bot, message, 
         except:
             pass
         try:
-          await bug.edit_text(text=stats)
+          await chan_msg.edit_text(text=stats)  # Fixed variable name from 'bug' to 'chan_msg'
         except:
           pass        
         
@@ -125,9 +123,9 @@ async def convert_video(video_file, output_directory, total_time, bot, message, 
     stdout, stderr = await process.communicate()
     r = stderr.decode()
     try:
-        if er:
-           await message.edit_text(str(er) + "\n\n**ERROR** Contact @SenpaiAF")
-           os.remove(videofile)
+        if r:  # Fixed variable name from 'er' to 'r'
+           await message.edit_text(str(r) + "\n\n**ERROR** Contact @SenpaiAF")
+           os.remove(video_file)  # Fixed variable name from 'videofile' to 'video_file'
            os.remove(out_put_file_name)
            return None
     except BaseException:
@@ -205,4 +203,4 @@ async def take_screen_shot(video_file, output_directory, ttl):
         return out_put_file_name
     else:
         return None
-# senpai I edited this,  maybe if it is wrong correct it 
+# senpai I edited this,  maybe if it is wrong correct it
